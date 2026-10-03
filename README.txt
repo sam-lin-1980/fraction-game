@@ -1,23 +1,20 @@
-數學遊戲入口網站
+數學遊戲入口網站 v2
 
-目錄結構：
-index.html：入口網站
-games.json：遊戲清單
-games/fraction-warrior/index.html：分數勇者
+新增：
+- 小學一年級 10 以內加法
+- 小學一年級 10 以內減法
+- 小學一年級個位數乘法
+- 主入口每個遊戲顯示自己的 Top 3 排行榜
 
-之後新增遊戲：
-1. 建立新資料夾，例如 games/multiplication-race/
-2. 把新遊戲的 index.html 放進去
-3. 只在 games.json 加一筆資料，不需要修改入口 index.html 的程式
+Supabase：
+1. 只要修改根目錄 config.js 一次。
+2. 使用原本 scores 表，不必新增資料表。
+3. 以 scores.mode 區分不同遊戲。
+4. 分數勇者新紀錄 mode = fraction-warrior，舊 full_game 紀錄仍會顯示。
 
-games.json 範例：
-{
-  "id": "multiplication-race",
-  "title": "乘法賽車",
-  "description": "九九乘法競速遊戲",
-  "icon": "🏎️",
-  "path": "games/multiplication-race/index.html",
-  "grade": "小學三年級",
-  "subject": "乘法",
-  "enabled": true
-}
+新增遊戲：
+- 在 games/ 建立新資料夾與 index.html
+- 在 games.json 加一筆資料
+- 不必修改主入口 index.html
+
+註：你寫的「10位數」依小學一年級程度實作為「10 以內」加減法。

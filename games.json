@@ -2,11 +2,54 @@
   {
     "id": "fraction-warrior",
     "title": "分數勇者",
-    "description": "小學五年級分數加減乘除闖關遊戲",
+    "description": "分數加、減、乘、除與混合闖關",
     "icon": "⚔️",
     "path": "games/fraction-warrior/index.html",
     "grade": "小學五年級",
     "subject": "分數四則運算",
+    "modes": [
+      "fraction-warrior",
+      "full_game"
+    ],
+    "enabled": true
+  },
+  {
+    "id": "grade1-addition",
+    "title": "10 以內加法勇者",
+    "description": "隨機練習 10 以內的加法",
+    "icon": "➕",
+    "path": "games/grade1-addition/index.html",
+    "grade": "小學一年級",
+    "subject": "10 以內加法",
+    "modes": [
+      "grade1-addition"
+    ],
+    "enabled": true
+  },
+  {
+    "id": "grade1-subtraction",
+    "title": "10 以內減法勇者",
+    "description": "隨機練習 10 以內的減法",
+    "icon": "➖",
+    "path": "games/grade1-subtraction/index.html",
+    "grade": "小學一年級",
+    "subject": "10 以內減法",
+    "modes": [
+      "grade1-subtraction"
+    ],
+    "enabled": true
+  },
+  {
+    "id": "grade1-multiplication",
+    "title": "個位數乘法勇者",
+    "description": "隨機練習 1～9 的個位數乘法",
+    "icon": "✖️",
+    "path": "games/grade1-multiplication/index.html",
+    "grade": "小學一年級",
+    "subject": "個位數乘法",
+    "modes": [
+      "grade1-multiplication"
+    ],
     "enabled": true
   }
 ]

@@ -622,20 +622,19 @@
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../../config.js"></script>
   <script>
-    // ===== Supabase 設定 =====
-    // 請把下面兩個值換成你的 Supabase Project URL 與 Publishable key。
-    // Publishable key 可放在瀏覽器端；不要放 secret/service_role key。
-    const SUPABASE_URL = "https://kfszgpcrrukopdispnwo.supabase.co";
-    const SUPABASE_KEY = "sb_publishable_c-rH4NKnZX74LPkrE69rYA_DDYxWBR7";
-
+    const GAME_ID = "fraction-warrior";
+    const GAME_MODES = ["fraction-warrior", "full_game"];
+    const cfg = window.GAME_PORTAL_CONFIG || {};
     const supabaseConfigured =
-      SUPABASE_URL.startsWith("https://") &&
-      SUPABASE_URL.includes(".supabase.co") &&
-      SUPABASE_KEY.startsWith("sb_publishable_");
-
+      typeof cfg.SUPABASE_URL === "string" &&
+      cfg.SUPABASE_URL.startsWith("https://") &&
+      cfg.SUPABASE_URL.includes(".supabase.co") &&
+      typeof cfg.SUPABASE_KEY === "string" &&
+      cfg.SUPABASE_KEY.startsWith("sb_publishable_");
     const db = supabaseConfigured
-      ? supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
+      ? supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_KEY)
       : null;
 
     const startScreen = document.getElementById("startScreen");
@@ -710,12 +709,12 @@
     };
 
     function getOrCreatePlayerId() {
-      let id = localStorage.getItem("fraction_game_player_id");
+      let id = localStorage.getItem("math_game_player_id") || localStorage.getItem("fraction_game_player_id");
       if (!id) {
         id = (window.crypto && crypto.randomUUID)
           ? crypto.randomUUID()
           : "p_" + Date.now() + "_" + Math.random().toString(36).slice(2, 10);
-        localStorage.setItem("fraction_game_player_id", id);
+        localStorage.setItem("math_game_player_id", id);
       }
       return id;
     }
@@ -737,7 +736,7 @@
       const { count, error } = await db
         .from("scores")
         .select("id", { count: "exact", head: true })
-        .eq("player_id", playerId);
+        .eq("player_id", playerId).in("mode", GAME_MODES);
 
       if (error) throw error;
       return (count || 0) + 1;
@@ -746,7 +745,7 @@
     async function saveGameResult(finalResult) {
       if (!db) {
         dbStatus.innerHTML =
-          "⚠️ 尚未設定 Supabase。請在 index.html 裡填入 <b>SUPABASE_URL</b> 與 <b>SUPABASE_KEY</b>。";
+          "⚠️ 尚未設定 Supabase。請回到網站根目錄的 <b>config.js</b> 填入 Project URL 與 Publishable key。";
         leaderboardBox.textContent = "尚未連接資料庫";
         historyBox.textContent = "尚未連接資料庫";
         return;
@@ -766,7 +765,7 @@
             time_seconds: elapsedSeconds,
             attempt_number: attemptNumber,
             completed: true,
-            mode: "full_game",
+            mode: GAME_ID,
             correct: completedQuestions,
             total: totalQuestions
           });
@@ -791,6 +790,7 @@
         .from("scores")
         .select("player_name,score,time_seconds")
         .eq("completed", true)
+        .in("mode", GAME_MODES)
         .order("score", { ascending: false })
         .order("time_seconds", { ascending: true })
         .limit(10);
@@ -832,6 +832,7 @@
         .from("scores")
         .select("score,time_seconds,attempt_number")
         .eq("player_id", playerId)
+        .in("mode", GAME_MODES)
         .order("attempt_number", { ascending: false })
         .limit(10);
 
