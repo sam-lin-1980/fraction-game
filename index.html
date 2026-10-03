@@ -2,10 +2,98 @@
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8">
-  <title>分數遊戲</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Supabase 排行榜測試</title>
 </head>
 <body>
-  <h1>分數遊戲測試成功！</h1>
-  <p>GitHub Pages 已經可以使用。</p>
+
+  <h1>Supabase 排行榜測試</h1>
+
+  <input id="name" type="text" placeholder="玩家名稱">
+  <input id="score" type="number" placeholder="分數">
+  <input id="time" type="number" placeholder="時間（秒）">
+
+  <button id="saveBtn">儲存測試成績</button>
+  <button id="loadBtn">讀取排行榜</button>
+
+  <h2>排行榜</h2>
+  <div id="result">尚未讀取</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script>
+    const SUPABASE_URL = "https://kfszgpcrrukopdispnwo.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_c-rH4NKnZX74LPkrE69rYA_DDYxWBR7";
+
+    const db = supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_KEY
+    );
+
+    document.getElementById("saveBtn").addEventListener("click", async () => {
+      const playerName = document.getElementById("name").value.trim();
+      const score = Number(document.getElementById("score").value);
+      const timeSeconds = Number(document.getElementById("time").value);
+
+      if (!playerName) {
+        alert("請輸入玩家名稱");
+        return;
+      }
+
+      const { error } = await db
+        .from("scores")
+        .insert({
+          player_name: playerName,
+          score: score,
+          time_seconds: timeSeconds,
+          correct: 10,
+          total: 10,
+          mode: "test"
+        });
+
+      if (error) {
+        alert("寫入失敗：" + error.message);
+      } else {
+        alert("成績寫入成功！");
+      }
+    });
+
+    document.getElementById("loadBtn").addEventListener("click", async () => {
+      const { data, error } = await db
+        .from("scores")
+        .select("*")
+        .order("score", { ascending: false })
+        .order("time_seconds", { ascending: true })
+        .limit(10);
+
+      if (error) {
+        document.getElementById("result").textContent =
+          "讀取失敗：" + error.message;
+        return;
+      }
+
+      if (data.length === 0) {
+        document.getElementById("result").textContent = "目前沒有成績";
+        return;
+      }
+
+      let html = "<ol>";
+
+      data.forEach(row => {
+        html += `
+          <li>
+            ${row.player_name}
+            - ${row.score} 分
+            - ${row.time_seconds} 秒
+          </li>
+        `;
+      });
+
+      html += "</ol>";
+
+      document.getElementById("result").innerHTML = html;
+    });
+  </script>
+
 </body>
 </html>
