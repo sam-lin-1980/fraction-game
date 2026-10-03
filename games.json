@@ -1,0 +1,12 @@
+[
+  {
+    "id": "fraction-warrior",
+    "title": "分數勇者",
+    "description": "小學五年級分數加減乘除闖關遊戲",
+    "icon": "⚔️",
+    "path": "games/fraction-warrior/index.html",
+    "grade": "小學五年級",
+    "subject": "分數四則運算",
+    "enabled": true
+  }
+]
