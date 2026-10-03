@@ -10,7 +10,7 @@
 </style>
 </head>
 <body><main class="wrap"><section class="hero"><h1>🎮 數學遊戲樂園</h1><p>選擇遊戲開始挑戰；每張遊戲卡會顯示自己的排行榜。</p><div id="dbNote" class="db-note">正在檢查排行榜連線...</div></section><div id="catalog"></div></main>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"><script src="config.js?v=2"></script>
 <script>
 const catalog=document.getElementById('catalog'),dbNote=document.getElementById('dbNote');
 const cfg=window.GAME_PORTAL_CONFIG||{};const dbReady=cfg.SUPABASE_URL?.startsWith('https://')&&cfg.SUPABASE_URL?.includes('.supabase.co')&&cfg.SUPABASE_KEY?.startsWith('sb_publishable_');const db=dbReady?supabase.createClient(cfg.SUPABASE_URL,cfg.SUPABASE_KEY):null;
